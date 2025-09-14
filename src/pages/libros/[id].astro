@@ -1,0 +1,113 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/Layout.astro";
+
+const { id } = Astro.params;
+
+// Traer los libros de la API
+const res = await fetch("http://localhost:4321/api/getBooks");
+const libros = await res.json();
+
+// Buscar libro por id
+const libro = libros.find((l) => String(l.id) === id);
+---
+
+<Layout>
+  {libro ? (
+    <article class="p-6 flex flex-col items-center">
+      <h1 class="text-2xl font-bold mb-2 text-center">{libro.nombre}</h1>
+      <p class="text-gray-600 mb-4 text-center">Autor: {libro.autor}</p>
+
+      <!-- Controles fijos -->
+      <div class="fixed top-0 left-0 right-0 bg-white shadow p-3 flex flex-wrap justify-center gap-2 z-50">
+        <button id="prev" class="px-3 py-1 bg-gray-200 rounded">⬅️ Anterior</button>
+        <button id="next" class="px-3 py-1 bg-gray-200 rounded">➡️ Siguiente</button>
+        <button id="zoomIn" class="px-3 py-1 bg-gray-200 rounded">🔍+</button>
+        <button id="zoomOut" class="px-3 py-1 bg-gray-200 rounded">🔍-</button>
+        <span id="pageInfo" class="ml-4 font-semibold"></span>
+      </div>
+
+      <!-- Contenedor scroll infinito -->
+      <div class="w-1/3 flex flex-col items-center pt-20 gap-4" id="pdf-container"></div>
+    </article>
+  ) : (
+    <h1 class="text-center text-xl">📕 Libro no encontrado</h1>
+  )}
+</Layout>
+
+{libro && (
+  <script src="../../node_modules/pdfjs-dist/build/pdf.mjs" type="module"></script>
+)}
+
+{libro && (
+  <script type="module">
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      '../../node_modules/pdfjs-dist/build/pdf.worker.mjs';
+
+    const url = "https://raw.githubusercontent.com/IGnacho12/SOFT/main/helloworld.pdf";
+    let pdfDoc = null;
+    let scale = 1.0;
+    const container = document.getElementById("pdf-container");
+    const pageInfo = document.getElementById("pageInfo");
+
+    pdfjsLib.getDocument(url).promise.then(async (doc) => {
+      pdfDoc = doc;
+      pageInfo.textContent = `Total: ${pdfDoc.numPages} páginas`;
+
+      for (let i = 1; i <= pdfDoc.numPages; i++) {
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        canvas.className = "border shadow rounded max-w-[800px] w-full";
+
+        container.appendChild(canvas);
+
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      }
+    });
+
+    // Zoom
+    const updateScale = (delta) => {
+      scale += delta;
+      container.innerHTML = ""; // Limpiar
+      pdfjsLib.getDocument(url).promise.then(async (doc) => {
+        pdfDoc = doc;
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+          const page = await pdfDoc.getPage(i);
+          const viewport = page.getViewport({ scale });
+
+          const canvas = document.createElement("canvas");
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          canvas.className = "border shadow rounded max-w-[800px] w-full";
+
+          container.appendChild(canvas);
+          await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        }
+      });
+    };
+
+    document.getElementById("zoomIn").addEventListener("click", () => updateScale(0.2));
+    document.getElementById("zoomOut").addEventListener("click", () => updateScale(-0.2));
+
+    // Botones de página (scroll a página)
+    document.getElementById("prev").addEventListener("click", () => {
+      const current = Math.floor(window.scrollY / (container.firstChild?.height || 1)) + 1;
+      if (current > 1) {
+        const canvas = container.children[current - 2];
+        canvas.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    document.getElementById("next").addEventListener("click", () => {
+      const current = Math.floor(window.scrollY / (container.firstChild?.height || 1)) + 1;
+      if (current < pdfDoc.numPages) {
+        const canvas = container.children[current];
+        canvas.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  </script>
+)}

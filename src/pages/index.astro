@@ -1,9 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import LibroPresentation from '../components/LibroPresentation.astro';
+import BuscarLibro from "../components/BuscarLibro.astro"
+
+
+const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
+const libros = await res.json();
 ---
 
+
 <Layout>
-	<main>
-		<h1>HOla mundo</h1>
+	<main class="mx-auto ">
+
+		<section class="">
+				<h1 class="text-center">Zazu Libreria</h1>
+		<p class="text-center">Aquí encontrararas los mejores libros</p>
+		<hr class="max-w-7xl mx-auto h-0.5 my-4 bg-slate-600 ">
+		</section>
+	
+
+		<BuscarLibro></BuscarLibro>
+		<!-- Sección Libros -->
+		<section class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2  md:grid-cols-4 gap-5 p-12 my-12">
+      {libros.map((libro) => (
+        <LibroPresentation {...libro} />
+      ))}
+		</section>
 	</main>
+
 </Layout>
+
