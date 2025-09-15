@@ -1,12 +1,12 @@
 ---
-const { id, nombre, autor, archivo_url } = Astro.props;
+const { id, nombre, autor, archivo_url, portada_url  } = Astro.props;
 ---
 
 <article class="w-full max-w-sm bg-white border border-slate-800 shadow-sm dark:bg-gray-800 dark:border-gray-700 transition hover:scale-105">
   <a href={`/libros/${id}`} class="no-underline">
     <img
-      class="p-8 rounded-t-lg shadow-sm"
-      src="https://d2sofvawe08yqg.cloudfront.net/aprendiendo-git/s_hero2x?1743347884"
+      class="aspect-4/6 shadow-sm"
+      src=`${portada_url}`
       alt={`Portada de ${nombre}`} 
     />
     <div class="px-5 pb-5">

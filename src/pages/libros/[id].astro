@@ -29,6 +29,9 @@ const libro = libros.find((l) => String(l.id) === id);
 
       <!-- Contenedor scroll infinito -->
       <div class="w-1/3 flex flex-col items-center pt-20 gap-4" id="pdf-container"></div>
+
+      <!-- Span invisible con la URL del PDF -->
+      <span id="pdf-url" class="hidden">{libro.archivo_url}</span>
     </article>
   ) : (
     <h1 class="text-center text-xl">📕 Libro no encontrado</h1>
@@ -41,40 +44,20 @@ const libro = libros.find((l) => String(l.id) === id);
 
 {libro && (
   <script type="module">
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      '../../node_modules/pdfjs-dist/build/pdf.worker.mjs';
+    document.addEventListener("DOMContentLoaded", async () => {
+      const url = document.getElementById("pdf-url").textContent;
 
-    const url = "https://raw.githubusercontent.com/IGnacho12/SOFT/main/helloworld.pdf";
-    let pdfDoc = null;
-    let scale = 1.0;
-    const container = document.getElementById("pdf-container");
-    const pageInfo = document.getElementById("pageInfo");
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        '../../node_modules/pdfjs-dist/build/pdf.worker.mjs';
 
-    pdfjsLib.getDocument(url).promise.then(async (doc) => {
-      pdfDoc = doc;
-      pageInfo.textContent = `Total: ${pdfDoc.numPages} páginas`;
+      const container = document.getElementById("pdf-container");
+      const pageInfo = document.getElementById("pageInfo");
+      let pdfDoc = null;
+      let scale = 1.0;
 
-      for (let i = 1; i <= pdfDoc.numPages; i++) {
-        const page = await pdfDoc.getPage(i);
-        const viewport = page.getViewport({ scale });
-
-        const canvas = document.createElement("canvas");
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        canvas.className = "border shadow rounded max-w-[800px] w-full";
-
-        container.appendChild(canvas);
-
-        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
-      }
-    });
-
-    // Zoom
-    const updateScale = (delta) => {
-      scale += delta;
-      container.innerHTML = ""; // Limpiar
-      pdfjsLib.getDocument(url).promise.then(async (doc) => {
-        pdfDoc = doc;
+      // Función para renderizar todas las páginas
+      async function renderAllPages() {
+        container.innerHTML = "";
         for (let i = 1; i <= pdfDoc.numPages; i++) {
           const page = await pdfDoc.getPage(i);
           const viewport = page.getViewport({ scale });
@@ -87,27 +70,39 @@ const libro = libros.find((l) => String(l.id) === id);
           container.appendChild(canvas);
           await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
         }
+        pageInfo.textContent = `Total: ${pdfDoc.numPages} páginas`;
+      }
+
+      // Cargar PDF
+      pdfDoc = await pdfjsLib.getDocument(url).promise;
+      await renderAllPages();
+
+      // Zoom
+      const updateScale = async (delta) => {
+        scale += delta;
+        if (scale < 0.2) scale = 0.2;
+        await renderAllPages();
+      };
+
+      document.getElementById("zoomIn").addEventListener("click", () => updateScale(0.2));
+      document.getElementById("zoomOut").addEventListener("click", () => updateScale(-0.2));
+
+      // Botones de página (scroll a página)
+      document.getElementById("prev").addEventListener("click", () => {
+        const current = Math.floor(window.scrollY / (container.firstChild?.height || 1)) + 1;
+        if (current > 1) {
+          const canvas = container.children[current - 2];
+          canvas.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       });
-    };
 
-    document.getElementById("zoomIn").addEventListener("click", () => updateScale(0.2));
-    document.getElementById("zoomOut").addEventListener("click", () => updateScale(-0.2));
-
-    // Botones de página (scroll a página)
-    document.getElementById("prev").addEventListener("click", () => {
-      const current = Math.floor(window.scrollY / (container.firstChild?.height || 1)) + 1;
-      if (current > 1) {
-        const canvas = container.children[current - 2];
-        canvas.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-
-    document.getElementById("next").addEventListener("click", () => {
-      const current = Math.floor(window.scrollY / (container.firstChild?.height || 1)) + 1;
-      if (current < pdfDoc.numPages) {
-        const canvas = container.children[current];
-        canvas.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      document.getElementById("next").addEventListener("click", () => {
+        const current = Math.floor(window.scrollY / (container.firstChild?.height || 1)) + 1;
+        if (current < pdfDoc.numPages) {
+          const canvas = container.children[current];
+          canvas.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
     });
   </script>
 )}

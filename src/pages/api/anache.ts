@@ -51,7 +51,7 @@ export async function POST({ request }) {
 
     // Buscar PDFs por nombre o autor
     const resultado = await consulta`
-      SELECT id, nombre, autor, archivo_url, calificaciones, created_at
+      SELECT id, nombre, autor, archivo_url, portada_url, calificaciones, created_at
       FROM pdfs
       WHERE LOWER(nombre) LIKE ${"%" + inputValue + "%"}
          OR LOWER(autor) LIKE ${"%" + inputValue + "%"}
