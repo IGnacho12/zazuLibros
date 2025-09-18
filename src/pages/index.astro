@@ -1,32 +1,88 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import LibroPresentation from '../components/LibroPresentation.astro';
-import BuscarLibro from "../components/BuscarLibro.astro"
-
+import Layout from "../layouts/Layout.astro";
+import LibroPresentation from "../components/LibroPresentation.astro";
+import Header from "../components/Header.astro";
+import BuscarLibro from "../components/BuscarLibro.astro";
+import Landing from "../components/Landing.astro";
 
 const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
 const libros = await res.json();
 ---
 
-
 <Layout>
-	<main class="mx-auto ">
+  <main class="mx-auto">
+    <Header />
 
-		<section class="">
-				<h1 class="text-center">Zazu Libreria</h1>
-		<p class="text-center">Aquí encontrararas los mejores libros</p>
-		<hr class="max-w-7xl mx-auto h-0.5 my-4 bg-slate-600 ">
-		</section>
-	
+    <section
+      class="h-screen bg-[var(--bg-background)] flex items-center justify-center gap-8"
+    >
+      <article class="text-center space-y-4">
+        <h1 class="text-5xl font-extrabold drop-shadow-md">Zazu Librería</h1>
 
-		<BuscarLibro></BuscarLibro>
-		<!-- Sección Libros -->
-		<section class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2  md:grid-cols-4 gap-5 p-12 my-12">
-      {libros.map((libro) => (
-        <LibroPresentation {...libro} />
-      ))}
-		</section>
-	</main>
+        <p class="text-[var(--text)] text-lg leading-relaxed mx-auto">
+          Encuentra libros educativos, entretenidos, de autoayuda y mucho más.
+        </p>
+        <a
+          class="group relative inline-block text-sm font-medium focus:ring-3 focus:outline-none"
+          href="#"
+        >
+          <!-- Borde principal -->
+          <span
+            class="absolute inset-0 border border-[var(--border)] group-hover:border-[var(--hover-border)] group-active:border-[var(--active-border)] rounded"
+          ></span>
 
+          <!-- Fondo y contenido -->
+          <span
+            class="block border border-[var(--border)] bg-[var(--background)] px-12 py-3 transition-transform duration-200 ease-out
+             group-hover:-translate-x-1 group-hover:-translate-y-1
+             group-hover:bg-[var(--hover-color)]
+             group-active:-translate-x-0 group-active:-translate-y-0
+             group-active:border-[var(--active-border)]
+             rounded"
+          >
+            Crear cuenta
+          </span>
+        </a>
+
+    
+      </article>
+
+      <picture>
+        <img id="gato" class="h-80 object-contain" src="gato.webp" alt="gato" />
+      </picture>
+      <div class="absolute bottom-8 flex justify-center w-full">
+        <svg
+          data-testid="geist-icon"
+          width="32"
+          height="32"
+          stroke-linejoin="round"
+          viewBox="0 0 16 16"
+          style="color: currentColor;"
+          class="animate-bounce"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8.74999 1.75V1H7.24999V1.75V12.4393L3.28032 8.46967L2.74999 7.93934L1.68933 9L2.21966 9.53033L7.29288 14.6036C7.68341 14.9941 8.31657 14.9941 8.7071 14.6036L13.7803 9.53033L14.3107 9L13.25 7.93934L12.7197 8.46967L8.74999 12.4393V1.75Z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </div>
+    </section>
+
+    <BuscarLibro />
+    <!-- Sección Libros -->
+    <section
+      class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 p-12 my-12"
+    >
+      {libros.map((libro) => <LibroPresentation {...libro} />)}
+    </section>
+
+  </main>
 </Layout>
 
+<style>
+  #gato {
+    transform: scaleX(-1);
+  }
+</style>

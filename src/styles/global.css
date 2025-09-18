@@ -3,22 +3,34 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  /* Variables por tema */
   :root {
-    --text: #050315;
-    --background: #fbfbfe;
-    --primary: #2f27ce;
-    --secondary: #dedcff;
-    --accent: #433bff;
+    --text: #0f172a; /* Texto Principal */
+    --background: #ffffff;
+    --secondary-background: #f9fafb; /* Fondo Claro */
+    --error: #DA3036;
+    --success: #22c55e; /* Verde éxito */
+
+    /* Grises estilo Vercel */
+    --border: #e5e7eb;        /* default border (claro) */
+    --hover-color: #f3f4f6;   /* fondo hover (gris suave) */
+    --hover-border: #d1d5db;  /* borde hover */
+    --active-border: #9ca3af; /* borde activo más fuerte */
   }
 
   .dark {
-    --text: #ebe9fc;
-    --background: #010104;
-    --primary: #3a31d8;
-    --secondary: #020024;
-    --accent: #0600c2;
+    --text: #ededed; /* Texto Secundario */
+    --background: #000000;
+    --secondary-background: #0a0a0a; /* Fondo Claro */
+    --error: #DA3036;
+    --success: #16a34a; /* Verde éxito en dark */
+
+    /* Grises estilo Vercel en dark */
+    --border: #1f2937;        /* default border (gris oscuro) */
+    --hover-color: #111827;   /* hover background (más claro que bg negro) */
+    --hover-border: #374151;  /* borde hover */
+    --active-border: #4b5563; /* borde activo más fuerte */
   }
+
 
   /* Colores base por tipo de elemento */
   body {
@@ -26,35 +38,44 @@
     color: var(--text);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: var(--text);
     @apply font-bold;
   }
 
-  p, li, ul, ol, a {
+  p,
+  li,
+  ul,
+  ol,
+  a {
     color: var(--text);
   }
 
   a {
-    color: var(--accent);
-    text-decoration: underline;
+    color: var(--color1);
+    text-decoration: none;
   }
 
   a:hover {
-    color: var(--primary);
+    color: var(--color2);
   }
 
-  span {
+  /* span {
     color: var(--accent);
-  }
+  } */
 
   strong {
-    color: var(--primary);
+    color: var(--color1);
   }
 
   code {
-    background-color: var(--secondary);
-    color: var(--accent);
+    background-color: var(--background);
+    color: var(--text);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-family: monospace;
