@@ -16,7 +16,6 @@
     "dotenv": "^17.2.2",
     "geist": "^1.5.1",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^5.4.149",
     "tailwindcss": "^4.1.13"
   }
 }
