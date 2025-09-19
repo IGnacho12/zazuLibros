@@ -1,11 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
+// Import /serverless for a Serverless SSR site
+import vercelServerless from '@astrojs/vercel/serverless';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  output: "server", // 🔑 así todas las rutas dinámicas se sirven en runtime
+  output: 'server',
+  adapter: vercelServerless(),
   vite: {
     plugins: [tailwindcss()]
   }
