@@ -3,7 +3,6 @@ import Layout from "../layouts/Layout.astro";
 import LibroPresentation from "../components/LibroPresentation.astro";
 import Header from "../components/Header.astro";
 import BuscarLibro from "../components/BuscarLibro.astro";
-import Landing from "../components/Landing.astro";
 import ButtonIndex from "../components/ButtonIndex.astro";
 
 const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
@@ -20,9 +19,12 @@ const libros = await res.json();
       <article class="text-center space-y-4">
         <h1 class="text-5xl font-extrabold drop-shadow-md">Zazu Librería</h1>
 
-        <p class="text-[var(--text)] text-lg leading-relaxed mx-auto">
-          Encuentra libros educativos, entretenidos, de autoayuda y mucho más.
+        <p class="text-[var(--text)] text-lg leading-relaxed mx-auto mx-1/4">
+          Librería virtual para leer libros.
+          Puedes subir los tuyos y agregarle precio.<br>
+          Leer PDF gratis, calificarlos y comprarlos.
         </p>
+        
         <a
           class="group relative inline-block text-sm font-medium focus:ring-3 focus:outline-none"
           href="#"

@@ -1,0 +1,17 @@
+---
+const { url } = Astro.props;
+---
+
+
+
+<a
+  href=`${url}`
+  class="hover:cursor-pointer
+         bg-[var(--background)]
+         border border-[var(--border)]
+         hover:border-[var(--active-border)]
+         hover:bg-[var(--hover-color)]
+         transition-all px-5 py-3 rounded-full flex justify-center items-center gap-2"
+>
+  <slot />
+</a>
