@@ -4,6 +4,7 @@ import LibroPresentation from "../components/LibroPresentation.astro";
 import Header from "../components/Header.astro";
 import BuscarLibro from "../components/BuscarLibro.astro";
 import Landing from "../components/Landing.astro";
+import ButtonIndex from "../components/ButtonIndex.astro";
 
 const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
 const libros = await res.json();
@@ -27,21 +28,15 @@ const libros = await res.json();
           href="#"
         >
           <!-- Borde principal -->
-          <span
-            class="absolute inset-0 border border-[var(--border)] group-hover:border-[var(--hover-border)] group-active:border-[var(--active-border)] rounded"
-          ></span>
+    
 
           <!-- Fondo y contenido -->
-          <span
-            class="block border border-[var(--border)] bg-[var(--background)] px-12 py-3 transition-transform duration-200 ease-out
-             group-hover:-translate-x-1 group-hover:-translate-y-1
-             group-hover:bg-[var(--hover-color)]
-             group-active:-translate-x-0 group-active:-translate-y-0
-             group-active:border-[var(--active-border)]
-             rounded"
-          >
-            Crear cuenta
-          </span>
+          <div class="flex gap-12">
+            <ButtonIndex id="crearCuenta" >Crear cuenta</ButtonIndex>
+            <ButtonIndex id="subirLibro" >Subir libro</ButtonIndex>
+          </div>
+          
+
         </a>
 
     

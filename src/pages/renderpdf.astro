@@ -1,114 +1,14 @@
----
-import Layout from "../layouts/Layout.astro"
----
-
-<Layout>
-  <!-- Controles fijos -->
-  <div id="controls" class="fixed top-0 left-0 right-0 bg-white shadow p-3 flex flex-wrap justify-center gap-2 z-50">
-    <h1 id="pdf-title" class="text-lg font-bold mr-4"></h1>
-
-    <button id="zoom-out" class="px-3 py-1 bg-gray-200 rounded">➖ Zoom</button>
-    <button id="zoom-in" class="px-3 py-1 bg-gray-200 rounded">➕ Zoom</button>
-
-    <span id="page-info" class="mx-2 font-semibold"></span>
-
-    <input id="page-num" type="number" min="1" class="w-16 border p-1 rounded text-center" />
-    <button id="go-page" class="px-3 py-1 bg-blue-500 text-white rounded">Go</button>
-  </div>
-
-  <!-- Contenedor con scroll -->
-  <div id="pdf-container" class="pt-20 flex flex-col items-center gap-6"></div>
-
-  <script src="../../node_modules/pdfjs-dist/build/pdf.mjs" type="module"></script>
-
-  <script type="module">
-    const url = './helloworld.pdf';
-
-    // Título dinámico
-    const fileName = url.split('/').pop();
-    document.getElementById("pdf-title").textContent = fileName;
-
-    // Worker
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      '../../node_modules/pdfjs-dist/build/pdf.worker.mjs';
-
-    const container = document.getElementById("pdf-container");
-    const pageInfo = document.getElementById("page-info");
-    const pageInput = document.getElementById("page-num");
-
-    let pdfDoc = null;
-    let totalPages = 0;
-    let scale = 0.9; // Zoom inicial
-
-    const canvases = []; // Guardamos referencias a todos los canvas
-
-    // Renderizar todas las páginas
-    async function renderAllPages() {
-      for (let num = 1; num <= totalPages; num++) {
-        const page = await pdfDoc.getPage(num);
-        const viewport = page.getViewport({ scale });
-        const outputScale = window.devicePixelRatio || 1;
-
-        const canvas = document.createElement("canvas");
-        canvas.id = `page-${num}`;
-        canvas.className = "shadow border rounded";
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = Math.floor(viewport.width * outputScale);
-        canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = Math.floor(viewport.width) + "px";
-        canvas.style.height = Math.floor(viewport.height) + "px";
-
-        const transform = outputScale !== 1
-          ? [outputScale, 0, 0, outputScale, 0, 0]
-          : null;
-
-        await page.render({
-          canvasContext: ctx,
-          transform,
-          viewport
-        }).promise;
-
-        canvases.push({ num, page, canvas });
-        container.appendChild(canvas);
-      }
-
-      pageInfo.textContent = `Total: ${totalPages} páginas`;
-    }
-
-    // Cargar PDF
-    const loadingTask = pdfjsLib.getDocument(url);
-    pdfDoc = await loadingTask.promise;
-    totalPages = pdfDoc.numPages;
-    await renderAllPages();
-
-    // Zoom (redibuja todas las páginas)
-    async function reRenderAllPages() {
-      container.innerHTML = "";
-      canvases.length = 0;
-      await renderAllPages();
-    }
-
-    document.getElementById("zoom-in").addEventListener("click", () => {
-      scale += 0.25;
-      reRenderAllPages();
-    });
-
-    document.getElementById("zoom-out").addEventListener("click", () => {
-      if (scale <= 0.5) return;
-      scale -= 0.25;
-      reRenderAllPages();
-    });
-
-    // Buscar página y saltar
-    document.getElementById("go-page").addEventListener("click", () => {
-      let page = parseInt(pageInput.value);
-      if (page >= 1 && page <= totalPages) {
-        document.getElementById(`page-${page}`).scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-      }
-    });
-  </script>
-</Layout>
+<div id="pdf-viewer" style="height: 100vh"></div>
+<script async type="module">
+  import EmbedPDF from 'https://snippet.embedpdf.com/embedpdf.js';
+ 
+  const url = 'https://corsproxy.io/?' + encodeURIComponent('https://raw.githubusercontent.com/IGnacho12/DatabaseZazuLibros/main/CaperucitaRoja.pdf');
+  
+  const viewer = EmbedPDF.init({
+    type: 'container',
+    target: document.getElementById('pdf-viewer'),
+    src: `${url}`,
+    lang: 'es',
+  }
+  });
+</script>
