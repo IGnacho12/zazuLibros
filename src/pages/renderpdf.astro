@@ -5,10 +5,10 @@
   const url = 'https://corsproxy.io/?' + encodeURIComponent('https://raw.githubusercontent.com/IGnacho12/DatabaseZazuLibros/main/CaperucitaRoja.pdf');
   
   const viewer = EmbedPDF.init({
-    type: 'container',
-    target: document.getElementById('pdf-viewer'),
-    src: `${url}`,
-    lang: 'es',
-  }
-  });
+  type: 'container',
+  target: document.getElementById('pdf-viewer'),
+  src: `${url}`,
+  lang: 'es',
+});
+
 </script>
