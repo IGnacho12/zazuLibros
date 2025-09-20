@@ -6,7 +6,8 @@ import BuscarLibro from "../components/BuscarLibro.astro";
 import ButtonIndex from "../components/ButtonIndex.astro";
 import Modal from "../components/Modal.astro";
 
-const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
+const res = await fetch("/api/getBooks");
+
 const libros = await res.json();
 ---
 
