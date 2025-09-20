@@ -11,9 +11,8 @@ const consulta = neon(process.env.DATABASE_URL);
 export async function GET() {
   try {
     const resultado = await consulta`
-      SELECT id, nombre, autor, archivo_url, calificaciones, created_at
+      SELECT id, nombre, autor, archivo_url, calificaciones
       FROM pdfs
-      ORDER BY created_at DESC
     `;
     return new Response(JSON.stringify(resultado), {
       status: 200,
@@ -39,9 +38,8 @@ export async function POST({ request }) {
     if (!inputValue) {
       // Retornar todos los PDFs
       const resultado = await consulta`
-        SELECT id, nombre, autor, archivo_url, calificaciones, created_at
+        SELECT id, nombre, autor, archivo_url, calificaciones
         FROM pdfs
-        ORDER BY created_at DESC
       `;
       return new Response(JSON.stringify(resultado), {
         status: 200,
@@ -51,11 +49,10 @@ export async function POST({ request }) {
 
     // Buscar PDFs por nombre o autor
     const resultado = await consulta`
-      SELECT id, nombre, autor, archivo_url, portada_url, calificaciones, created_at
+      SELECT id, nombre, autor, archivo_url, portada_url, calificaciones
       FROM pdfs
       WHERE LOWER(nombre) LIKE ${"%" + inputValue + "%"}
          OR LOWER(autor) LIKE ${"%" + inputValue + "%"}
-      ORDER BY created_at DESC
     `;
 
     return new Response(JSON.stringify(resultado), {

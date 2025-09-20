@@ -7,13 +7,13 @@
     --text: #0f172a; /* Texto Principal */
     --background: #ffffff;
     --secondary-background: #f9fafb; /* Fondo Claro */
-    --error: #DA3036;
+    --error: #da3036;
     --success: #22c55e; /* Verde éxito */
 
     /* Grises estilo Vercel */
-    --border: #e5e7eb;        /* default border (claro) */
-    --hover-color: #f3f4f6;   /* fondo hover (gris suave) */
-    --hover-border: #d1d5db;  /* borde hover */
+    --border: #e5e7eb; /* default border (claro) */
+    --hover-color: #f3f4f6; /* fondo hover (gris suave) */
+    --hover-border: #d1d5db; /* borde hover */
     --active-border: #9ca3af; /* borde activo más fuerte */
   }
 
@@ -21,16 +21,15 @@
     --text: #ededed; /* Texto Secundario */
     --background: #000000;
     --secondary-background: #0a0a0a; /* Fondo Claro */
-    --error: #DA3036;
+    --error: #da3036;
     --success: #16a34a; /* Verde éxito en dark */
 
     /* Grises estilo Vercel en dark */
-    --border: #1f2937;        /* default border (gris oscuro) */
-    --hover-color: #111827;   /* hover background (más claro que bg negro) */
-    --hover-border: #374151;  /* borde hover */
+    --border: #1f2937; /* default border (gris oscuro) */
+    --hover-color: #111827; /* hover background (más claro que bg negro) */
+    --hover-border: #374151; /* borde hover */
     --active-border: #4b5563; /* borde activo más fuerte */
   }
-
 
   /* Colores base por tipo de elemento */
   body {
@@ -80,4 +79,63 @@
     border-radius: 4px;
     font-family: monospace;
   }
+
+  /* Contenedor del form */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Grupo de input + label */
+  .input-group {
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Ajusta según necesites */
+    margin: 10px 0;
+  }
+
+  /* Inputs */
+  .input-group input {
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    padding: 0 15px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    outline: none;
+    background: var(--background);
+    transition: all 0.3s ease;
+  }
+
+  /* Labels */
+  .input-group label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    padding: 0 5px;
+    pointer-events: none;
+    color: var(--text);
+    background: var(--background);
+    transition: 0.2s ease all;
+  }
+
+  /* Estado flotante: input enfocado o con valor */
+  .input-group input:focus ~ label,
+  .input-group input:valid ~ label {
+    top: 0px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--background);
+    padding: 0 5px;
+  }
+
+  /* Opcional: cambio de borde al enfocar */
+  .input-group input:focus {
+    border-color: var(--hover-border);
+  }
+  
 }
