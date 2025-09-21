@@ -3,8 +3,9 @@ import Layout from "../layouts/Layout.astro";
 import LibroPresentation from "../components/LibroPresentation.astro";
 import Header from "../components/Header.astro";
 import BuscarLibro from "../components/BuscarLibro.astro";
-import ButtonIndex from "../components/ButtonIndex.astro";
 import Modal from "../components/Modal.astro";
+import UploadBookModal from "../components/UploadBookModal.astro"
+import ButtonsIndex from "../components/ButtonIndex.astro";
 
 const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
 const libros = await res.json();
@@ -21,17 +22,16 @@ const libros = await res.json();
         <h1 class="text-5xl font-extrabold drop-shadow-md">Zazu Librería</h1>
 
         <p class="text-[var(--text)] text-lg leading-relaxed mx-auto mx-1/4">
-          Librería virtual para leer libros.
-          Puedes subir los tuyos y agregarle precio.<br>
+          Librería virtual para leer libros. Puedes subir los tuyos y agregarle
+          precio.<br />
           Leer PDF gratis, calificarlos y comprarlos.
         </p>
-        
+
         <a
           class="group relative inline-block text-sm font-medium focus:ring-3 focus:outline-none"
           href="#"
         >
           <!-- Borde principal -->
-    
 
           <!-- Fondo y contenido -->
           <div class="flex gap-12">
@@ -39,36 +39,63 @@ const libros = await res.json();
               <!-- Borde animado -->
               <span
                 class="absolute inset-0 rounded border border-transparent
-                       group-hover:border-[var(--hover-border)]
-                       group-active:border-[var(--active-border)]
-                       pointer-events-none"
+                                   group-hover:border-[var(--hover-border)]
+                                   group-active:border-[var(--active-border)]
+                                   pointer-events-none"
               ></span>
             
               <!-- Botón con borde base -->
               <button
-              onclick="my_modal_1.showModal()"
-                class="relative z-10 block border border-[var(--border)] 
-                       bg-[var(--background)] px-12 py-3 rounded
-                       transition-transform duration-200 ease-out
-                       hover:-translate-x-1 hover:-translate-y-1
-                       hover:bg-[color:var(--hover-color)]
-                       active:translate-x-0 active:translate-y-0
-                       hover:cursor-pointer"
+                onclick="my_modal_1.showModal()"
+                class="relative z-10 block border border-[var(--border)]
+                                   bg-[var(--background)] px-12 py-3 rounded
+                                   transition-transform duration-200 ease-out
+                                   hover:-translate-x-1 hover:-translate-y-1
+                                   hover:bg-[color:var(--hover-color)]
+                                   active:translate-x-0 active:translate-y-0
+                                   hover:cursor-pointer"
               >
                 Crear cuenta
               </button>
             </div>
-            <ButtonIndex id="subirLibro" >Subir libro</ButtonIndex>
+            <div class="relative group inline-block">
+              <!-- Borde animado -->
+              <span
+                class="absolute inset-0 rounded border border-transparent
+                                   group-hover:border-[var(--hover-border)]
+                                   group-active:border-[var(--active-border)]
+                                   pointer-events-none"
+              ></span>
+            
+              <!-- Botón con borde base -->
+              <button
+                onclick="my_modal_2.showModal()"
+                class="relative z-10 block border border-[var(--border)]
+                                   bg-[var(--background)] px-12 py-3 rounded
+                                   transition-transform duration-200 ease-out
+                                   hover:-translate-x-1 hover:-translate-y-1
+                                   hover:bg-[color:var(--hover-color)]
+                                   active:translate-x-0 active:translate-y-0
+                                   hover:cursor-pointer"
+              >
+                Subir libro
+              </button>
+            </div>
+            <Modal></Modal>
+            <UploadBookModal></UploadBookModal>
+      
           </div>
-          
-          <Modal></Modal>
-        </a>
 
-    
+        </a>
       </article>
 
       <picture>
-        <img id="gato" class="h-80 object-contain" src="https://png.pngtree.com/png-clipart/20230914/original/pngtree-yorkie-clipart-yorkshire-terrier-dog-cartoon-vector-png-image_12152349.png" alt="gato" />
+        <img
+          id="gato"
+          class="h-80 object-contain"
+          src="/zazuImageIndex.webp"
+          alt="gato"
+        />
       </picture>
       <div class="absolute bottom-8 flex justify-center w-full">
         <svg
@@ -84,8 +111,7 @@ const libros = await res.json();
             fill-rule="evenodd"
             clip-rule="evenodd"
             d="M8.74999 1.75V1H7.24999V1.75V12.4393L3.28032 8.46967L2.74999 7.93934L1.68933 9L2.21966 9.53033L7.29288 14.6036C7.68341 14.9941 8.31657 14.9941 8.7071 14.6036L13.7803 9.53033L14.3107 9L13.25 7.93934L12.7197 8.46967L8.74999 12.4393V1.75Z"
-            fill="currentColor"
-          ></path>
+            fill="currentColor"></path>
         </svg>
       </div>
     </section>
@@ -93,13 +119,52 @@ const libros = await res.json();
     <BuscarLibro />
     <!-- Sección Libros -->
     <section
+      id="booksContainer"
       class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 p-12 my-12"
     >
       {libros.map((libro: object) => <LibroPresentation {...libro} />)}
     </section>
-
   </main>
 </Layout>
+
+<script type="module">
+  document.getElementById("book-search")
+    ?.addEventListener("input", async () => {
+      const input = document.getElementById("book-search");
+      const inputValue = input.value;
+
+      const response = await fetch(
+        "/api/searchBooks?" +
+          new URLSearchParams({ query: inputValue }).toString()
+      );
+      const data = await response.json();
+
+      const container = document.getElementById("booksContainer");
+      container.innerHTML = ""; // limpiar antes de volver a pintar
+
+      data.forEach(({ id, nombre, autor, portada_url }) => {
+        container.innerHTML += `
+          <a href="/libros/bookInfo${id}"
+             class="no-underline hover:curser-pointer book-card px-4 py-3 border border-[var(--border)] hover:border-[var(--active-border)] transition-all">
+            <div class="book-card__cover aspect-2/3">
+              <div class="book-card__book">
+                <div class="book-card__book-front">
+                  <img class="book-card__img" src="${portada_url}" alt="Portada de ${nombre}" />
+                </div>
+                <div class="book-card__book-side"></div>
+                <div class="book-card__book-back"></div>
+              </div>
+            </div>
+            <div>
+              <div class="text-[var(--text)] text-2xl font-extrabold">${nombre}</div>
+              <div class="text-[var(--active-border)] text-lg italic">${autor}</div>
+            </div>
+          </a>
+        `;
+      });
+    });
+</script>
+
 
 <style>
   #gato {

@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
   // Busqueda en nombre o autor usando ILIKE para case-insensitive
   const resultado = await consulta`
-  SELECT id, nombre, autor, archivo_url, portada_url, calificaciones
+  SELECT *
   FROM pdfs
   WHERE nombre ILIKE ${`%${query}%`} OR autor ILIKE ${`%${query}%`}
 `;

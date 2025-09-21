@@ -8,7 +8,7 @@ const consulta = neon(process.env.DATABASE_URL!);
 
 export async function GET() {
   const resultado = await consulta`
-    SELECT id, nombre, autor, archivo_url, portada_url, calificaciones
+    SELECT *
     FROM pdfs
   `;
   return new Response(JSON.stringify(resultado), {
