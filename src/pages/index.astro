@@ -7,12 +7,12 @@ import Modal from "../components/Modal.astro";
 import UploadBookModal from "../components/UploadBookModal.astro"
 import ButtonsIndex from "../components/ButtonIndex.astro";
 
-const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
+const res = await fetch("api/getBooks"); // cambia host si deployas
 const libros = await res.json();
 ---
 
 <Layout>
-  <main class="mx-auto">
+  <main class="mx-auto">  
     <Header />
 
     <section
@@ -51,10 +51,10 @@ const libros = await res.json();
                                    bg-[var(--background)] px-12 py-3 rounded
                                    transition-transform duration-200 ease-out
                                    hover:-translate-x-1 hover:-translate-y-1
-                                   hover:bg-[color:var(--hover-color)]
+                                   hover:bg-[color:var(--hover-color)]  
                                    active:translate-x-0 active:translate-y-0
-                                   hover:cursor-pointer"
-              >
+                                    hover:cursor-pointer"
+                >
                 Crear cuenta
               </button>
             </div>
