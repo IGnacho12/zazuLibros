@@ -1,20 +1,19 @@
 
 <dialog
   closedby="any"
-  id="my_modal_1"
+  id="my_modal_3"
   class="modal mx-auto my-auto transition-all px-8 py-6 border border-[var(--active-border)] rounded-md"
 >
   <form
-    id="registerForm"
-    action="https://miapi.com/usuarios"
+    id="loginForm"
+    action="api/login"
     method="POST"
     class="flex flex-col gap-4"
   >
-    <h3 class="text-4xl font-bold text-left">Crea tu cuenta!</h3>
+    <h3 class="text-4xl font-bold text-left">Inicia sesión</h3>
     <p class="py-2 text-md text-[var(--text)]">
-      Solamente debes proporcionar un nombre y una contraseña 🤓
+      jijija
     </p>
-    <button class="text-blue-700 hover:cursor-pointer">Si ya tienes una cuenta inicia sesión</button>
 
     <div class="input-group">
       <input
@@ -49,7 +48,7 @@
     <div class="flex flex-row justify-center gap-5 mt-4">
       <button
         type="button"
-        onclick="my_modal_1.close()"
+        onclick="my_modal_3.close()"
         class="bg-[var(--background)] border border-[var(--border)] text-red-700 hover:bg-red-100 px-5 py-3 rounded-sm"
       >
         Cerrar
@@ -58,10 +57,48 @@
         type="submit"
         class="bg-[var(--background)] border border-[var(--border)] text-green-700 hover:bg-green-100 px-5 py-3 rounded-sm"
       >
-        Crear cuenta
+        Iniciar Sesión
       </button>
     </div>
   </form>
 </dialog>
 
-<script></script>
+<script type="module">
+  const form = document.getElementById('loginForm');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // evita que se recargue la página
+  
+    const payload = {
+      nombre: form.name.value,
+      password: form.password.value
+    };
+  
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        const user = data.user;
+  
+        // 1️⃣ Cambiar avatar
+        if (user.profileimg_url) {
+          document.getElementById('avatar').src = user.profileimg_url;
+        }
+
+        // 3️⃣ Cerrar modal
+        document.getElementById('my_modal_3').close();
+      } else {
+        alert(data.error || 'Error al iniciar sesión');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error de conexión');
+    }
+  });
+  </script>

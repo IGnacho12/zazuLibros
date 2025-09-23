@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 export const prerender = false;
 
 dotenv.config();
-const consulta = neon(process.env.DATABASE_URL);
+const consulta = neon(process.env.DATABASE_URL!);
 
 // ===============================
 // GET: Obtener todos los PDFs
