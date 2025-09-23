@@ -7,7 +7,7 @@ import Layout from "../../layouts/Layout.astro";
 const { id } = Astro.params;
 
 // Traer los libros de la API
-const res = await fetch("http://localhost:4321/api/getBooks");
+const res = await fetch("https://zazu-libros.vercel.app/api/getBooks");
 const libros = await res.json();
 
 // Buscar libro por id
