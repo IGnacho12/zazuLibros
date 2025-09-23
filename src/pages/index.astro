@@ -9,7 +9,7 @@ import ButtonsIndex from "../components/ButtonIndex.astro";
 import IniciarSesionModal from "../components/InciarSesionModal.astro"
 import InciarSesionModal from "../components/InciarSesionModal.astro";
 
-const res = await fetch("http://localhost:4321/api/getBooks"); // cambia host si deployas
+const res = await fetch("/api/getBooks"); // cambia host si deployas
 const libros = await res.json();
 ---
 
