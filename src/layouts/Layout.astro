@@ -1,0 +1,37 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Zazu Librería</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style>
+@font-face {
+  font-family: "geist";
+  src: url("/Geist.ttf") format("truetype");
+}
+
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "geist", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  input:focus-visible {
+  outline: 2px solid crimson;
+  border-radius: 3px;
+}
+</style>

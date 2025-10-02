@@ -1,0 +1,14 @@
+<div id="pdf-viewer" style="height: 100vh"></div>
+<script async type="module">
+  import EmbedPDF from 'https://snippet.embedpdf.com/embedpdf.js';
+ 
+  const url = 'https://corsproxy.io/?' + encodeURIComponent('https://raw.githubusercontent.com/IGnacho12/DatabaseZazuLibros/main/CaperucitaRoja.pdf');
+  
+  const viewer = EmbedPDF.init({
+  type: 'container',
+  target: document.getElementById('pdf-viewer'),
+  src: `${url}`,
+  lang: 'es',
+});
+
+</script>

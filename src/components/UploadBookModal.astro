@@ -1,0 +1,197 @@
+<dialog
+  closedby="any"
+  id="my_modal_2"
+  class="modal mx-auto my-auto  px-8 py-6 border border-[var(--active-border)] rounded-md w-1/2"
+>
+  <form
+    id="registerForm"
+    action="api/getBooks"
+    method="POST"
+    class="flex flex-col gap-4"
+  >
+    <h3 class="text-4xl font-bold text-left">¡Sube tu libro!</h3>
+    <p class="py-2 text-md text-[var(--text)]">
+      Debes proporcionar todos los siguientes campos para una correcta
+      visualización del mismo.
+    </p>
+
+    <main class="grid grid-cols-2 gap-4 w-full">
+      <!-- Preview / Skeleton Section -->
+      <section class=" p-4 flex flex-col gap-2">
+        <!-- Título -->
+        <h2 id="preview-title" class="min-h-6 bg-gray-200 rounded-full dark:bg-gray-700 w-full text-2xl wrap-break-word text-left"></h2>
+        <!-- Autor -->
+        <p id="preview-author" class="min-h-4 bg-gray-200 rounded-full dark:bg-gray-700 text-md italic w-32 text-left"></p>
+        <!-- Descripción -->
+        <div class="space-y-2 mt-2 text-left">
+          <p id="preview-description" class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></p>
+          <p id="preview-description2" class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-5/6"></p>
+          <p id="preview-description3" class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-4/6"></p>
+        </div>
+        <!-- Portada -->
+        <div id="preview-image" class="flex items-center justify-center bg-gray-300 rounded-sm dark:bg-gray-700 mt-4 aspect-2/3">
+          <span class="text-gray-500">Imagen de portada</span>
+        </div>
+        <!-- Archivo PDF -->
+        <p id="preview-file" class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-3/6 mt-2"></p>
+      </section>
+
+      <!-- Input Section -->
+      <section class="w-full  p-4 flex flex-col gap-4">
+        <div class="input-group">
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            minlength="2"
+            maxlength="40"
+            required
+            class="input w-full"
+            title="Ingresa tu nombre de usuario"
+            placeholder=" "
+          />
+          <label for="nombre" class="label">Nombre</label>
+        </div>
+
+        <div class="input-group">
+          <input
+            type="text"
+            id="autor"
+            name="autor"
+            minlength="2"
+            maxlength="20"
+            required
+            class="input w-full"
+            title="Ingresa el autor del libro"
+            placeholder=" "
+          />
+          <label for="autor" class="label">Autor</label>
+        </div>
+
+        <div class="input-group">
+          <input
+            id="descripcion"
+            name="descripcion"
+            minlength="2"
+            maxlength="150"
+            required
+            class="input w-full"
+            title="Ingresa la descripcion del libro"
+            placeholder=" "
+          ></input>
+          <label for="descripcion" class="label">Descripción del libro</label>
+        </div>
+
+        <div class="input-group">
+          <input
+            type="text"
+            id="portada_url"
+            name="portada_url"
+            required
+            class="input w-full"
+            title="Ingresa la portada_url del libro"
+            placeholder=" "
+          />
+          <label for="portada_url" class="label">URL portada</label>
+        </div>
+
+        <div class="input-group">
+          <input
+            type="text"
+            id="archivo_url"
+            name="archivo_url"
+            required
+            class="input w-full"
+            title="Ingresa la URL del archivo del libro"
+            placeholder=" "
+          />
+          <label for="archivo_url" class="label">URL PDF</label>
+        </div>
+      </section>
+    </main>
+
+    <div class="flex flex-row justify-center gap-5 mt-4">
+      <button
+        type="button"
+        onclick="my_modal_2.close()"
+        class="bg-[var(--background)] border border-[var(--border)] text-red-700 hover:bg-red-100 px-5 py-3 rounded-sm"
+      >
+        Cerrar
+      </button>
+      <button
+        type="submit"
+        class="bg-[var(--background)] border border-[var(--border)] text-green-700 hover:bg-green-100 px-5 py-3 rounded-sm"
+      >
+        Subir Libro
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script type="module">
+const title = document.getElementById('preview-title');
+const author = document.getElementById('preview-author');
+const description = document.getElementById('preview-description');
+const description2 = document.getElementById('preview-description2');
+const description3 = document.getElementById('preview-description3');
+const image = document.getElementById('preview-image');
+const file = document.getElementById('preview-file');
+
+// Título
+document.getElementById('nombre').addEventListener('input', e => {
+  title.textContent = e.target.value || '';
+  title.classList.toggle('bg-gray-200', !e.target.value);
+});
+
+// Autor
+document.getElementById('autor').addEventListener('input', e => {
+  author.textContent = e.target.value || '';
+  author.classList.toggle('bg-gray-200', !e.target.value);
+});
+
+// Descripción
+document.getElementById('descripcion').addEventListener('input', e => {
+  const words = e.target.value.split(' ');
+  description.textContent = words.slice(0, 10).join(' ') || '';
+  description2.textContent = words.slice(10, 20).join(' ') || '';
+  description3.textContent = words.slice(20, 30).join(' ') || '';
+  description.classList.toggle('bg-gray-200', !e.target.value);
+  description2.classList.toggle('bg-gray-200', !e.target.value);
+  description3.classList.toggle('bg-gray-200', !e.target.value);
+});
+
+// Portada
+document.getElementById('portada_url').addEventListener('input', e => {
+  if(e.target.value) {
+    image.innerHTML = `<img src="${e.target.value}" class="w-full h-full object-cover rounded-sm aspect-2/3" />`;
+  } else {
+    image.innerHTML = '<span class="text-gray-500">Imagen de portada</span>';
+  }
+});
+
+// PDF
+function isPdfUrl(url) {
+  return url.toLowerCase().endsWith('.pdf');
+}
+
+const pdfInput = document.getElementById('archivo_url');
+
+pdfInput.addEventListener('input', e => {
+  const url = e.target.value;
+  console.log("boe")
+
+  if (!url) {
+    file.textContent = '';
+    file.className = 'mt-1 text-sm';
+    return;
+  }
+
+  if (isPdfUrl(url)) {
+    file.textContent = '✅ PDF válido detectado';
+    file.className = 'mt-1 text-sm text-green-600';
+  } else {
+    file.textContent = '❌ No se detecta un PDF en el link';
+    file.className = 'mt-1 text-sm text-red-600';
+  }
+});
+</script>

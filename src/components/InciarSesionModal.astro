@@ -1,0 +1,104 @@
+
+<dialog
+  closedby="any"
+  id="my_modal_3"
+  class="modal mx-auto my-auto transition-all px-8 py-6 border border-[var(--active-border)] rounded-md"
+>
+  <form
+    id="loginForm"
+    action="api/login"
+    method="POST"
+    class="flex flex-col gap-4"
+  >
+    <h3 class="text-4xl font-bold text-left">Inicia sesión</h3>
+    <p class="py-2 text-md text-[var(--text)]">
+      jijija
+    </p>
+
+    <div class="input-group">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        minlength="2"
+        maxlength="20"
+        required
+        class="input"
+        title="Ingresa tu nombre de usuario"
+        placeholder=" "
+      />
+      <label for="name" class="label">Nombre</label>
+    </div>
+
+    <div class="input-group">
+      <input
+        type="password"
+        id="password"
+        name="password"
+        minlength="2"
+        maxlength="20"
+        required
+        class="input"
+        title="Ingresa tu contraseña"
+        placeholder=" "
+      />
+      <label for="password" class="label">Contraseña</label>
+    </div>
+
+    <div class="flex flex-row justify-center gap-5 mt-4">
+      <button
+        type="button"
+        onclick="my_modal_3.close()"
+        class="bg-[var(--background)] border border-[var(--border)] text-red-700 hover:bg-red-100 px-5 py-3 rounded-sm"
+      >
+        Cerrar
+      </button>
+      <button
+        type="submit"
+        class="bg-[var(--background)] border border-[var(--border)] text-green-700 hover:bg-green-100 px-5 py-3 rounded-sm"
+      >
+        Iniciar Sesión
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script type="module">
+  const form = document.getElementById('loginForm');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // evita que se recargue la página
+  
+    const payload = {
+      nombre: form.name.value,
+      password: form.password.value
+    };
+  
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        const user = data.user;
+  
+        // 1️⃣ Cambiar avatar
+        if (user.profileimg_url) {
+          document.getElementById('avatar').src = user.profileimg_url;
+        }
+
+        // 3️⃣ Cerrar modal
+        document.getElementById('my_modal_3').close();
+      } else {
+        alert(data.error || 'Error al iniciar sesión');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error de conexión');
+    }
+  });
+  </script>

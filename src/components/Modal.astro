@@ -1,0 +1,67 @@
+
+<dialog
+  closedby="any"
+  id="my_modal_1"
+  class="modal mx-auto my-auto transition-all px-8 py-6 border border-[var(--active-border)] rounded-md"
+>
+  <form
+    id="registerForm"
+    action="https://miapi.com/usuarios"
+    method="POST"
+    class="flex flex-col gap-4"
+  >
+    <h3 class="text-4xl font-bold text-left">Crea tu cuenta!</h3>
+    <p class="py-2 text-md text-[var(--text)]">
+      Solamente debes proporcionar un nombre y una contraseña 🤓
+    </p>
+    <button class="text-blue-700 hover:cursor-pointer">Si ya tienes una cuenta inicia sesión</button>
+
+    <div class="input-group">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        minlength="2"
+        maxlength="20"
+        required
+        class="input"
+        title="Ingresa tu nombre de usuario"
+        placeholder=" "
+      />
+      <label for="name" class="label">Nombre</label>
+    </div>
+
+    <div class="input-group">
+      <input
+        type="password"
+        id="password"
+        name="password"
+        minlength="2"
+        maxlength="20"
+        required
+        class="input"
+        title="Ingresa tu contraseña"
+        placeholder=" "
+      />
+      <label for="password" class="label">Contraseña</label>
+    </div>
+
+    <div class="flex flex-row justify-center gap-5 mt-4">
+      <button
+        type="button"
+        onclick="my_modal_1.close()"
+        class="bg-[var(--background)] border border-[var(--border)] text-red-700 hover:bg-red-100 px-5 py-3 rounded-sm"
+      >
+        Cerrar
+      </button>
+      <button
+        type="submit"
+        class="bg-[var(--background)] border border-[var(--border)] text-green-700 hover:bg-green-100 px-5 py-3 rounded-sm"
+      >
+        Crear cuenta
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script></script>

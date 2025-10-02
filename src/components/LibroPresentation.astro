@@ -1,0 +1,101 @@
+---
+const { id, nombre, autor, portada_url } = Astro.props;
+---
+
+<a
+  href={`/libros/bookInfo${id}`}
+  class="no-underline hover:curser-pointer book-card px-4 py-3 border border-[var(--border)] hover:border-[var(--active-border)] transition-all"
+>
+  <div class="book-card__cover aspect-2/3">
+    <div class="book-card__book">
+      <!-- Frente del libro -->
+      <div class="book-card__book-front">
+        <img
+          class="book-card__img"
+          src={portada_url}
+          alt={`Portada de ${nombre}`}
+        />
+      </div>
+      <!-- Lado del libro -->
+      <div class="book-card__book-side"></div>
+      <!-- Espalda del libro -->
+      <div class="book-card__book-back"></div>
+    </div>
+  </div>
+
+  <!-- Información abajo -->
+  <div>
+    <div class="text-[var(--text)] text-2xl font-extrabold">{nombre}</div>
+    <div class="text-[var(--active-border)] text-lg italic">{autor}</div>
+  </div>
+</a>
+
+<style>
+  .book-card__cover {
+    position: relative;
+
+    margin: 0 auto 8px auto;
+    perspective: 1000px;
+  }
+
+  .book-card__book {
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 250ms ease;
+  }
+
+  .book-card__book-front {
+    position: absolute;
+    height: 100%;
+  }
+
+  .book-card__book-back {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    transform: translateZ(-40px);
+  }
+
+  .book-card__book-side {
+    position: absolute;
+    top: 5px;
+    bottom: 2px;
+    right: -29px;
+    width: 40px;
+    background-size: 5px;
+    background-color: var(--secondary-background);
+    background-image: linear-gradient(
+      to right,
+      #ccc 35%,
+      var(--secondary-background) 35%
+    );
+    opacity: 0;
+    transform: rotateY(90deg);
+  }
+
+  .book-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .book-card__title {
+    font-size: 1.5em;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* Hover effect */
+  .book-card:hover .book-card__book {
+    transform: rotateY(-30deg) translate(-15px, -30px);
+  }
+
+  .book-card:hover .book-card__book-side {
+    opacity: 1;
+  }
+
+  .book-card:hover .book-card__book-back {
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.35);
+  }
+</style>
