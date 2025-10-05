@@ -4,17 +4,18 @@ import LibroPresentation from "../components/LibroPresentation.astro";
 import Header from "../components/Header.astro";
 import BuscarLibro from "../components/BuscarLibro.astro";
 import Modal from "../components/Modal.astro";
-import UploadBookModal from "../components/UploadBookModal.astro"
+import UploadBookModal from "../components/UploadBookModal.astro";
 import ButtonsIndex from "../components/ButtonIndex.astro";
-import IniciarSesionModal from "../components/InciarSesionModal.astro"
+import IniciarSesionModal from "../components/InciarSesionModal.astro";
 import InciarSesionModal from "../components/InciarSesionModal.astro";
+import Books from "../components/Books.jsx";
 
 const res = await fetch("https://zazu-libros.vercel.app/api/getBooks"); // cambia host si deployas
 const libros = await res.json();
 ---
 
 <Layout>
-  <main class="mx-auto">  
+  <main class="mx-auto">
     <Header />
 
     <section
@@ -45,7 +46,7 @@ const libros = await res.json();
                                    group-active:border-[var(--active-border)]
                                    pointer-events-none"
               ></span>
-            
+
               <!-- Botón con borde base -->
               <button
                 onclick="my_modal_1.showModal()"
@@ -53,10 +54,10 @@ const libros = await res.json();
                                    bg-[var(--background)] px-12 py-3 rounded
                                    transition-transform duration-200 ease-out
                                    hover:-translate-x-1 hover:-translate-y-1
-                                   hover:bg-[color:var(--hover-color)]  
+                                   hover:bg-[color:var(--hover-color)]
                                    active:translate-x-0 active:translate-y-0
                                     hover:cursor-pointer"
-                >
+              >
                 Crear cuenta
               </button>
             </div>
@@ -68,7 +69,7 @@ const libros = await res.json();
                                    group-active:border-[var(--active-border)]
                                    pointer-events-none"
               ></span>
-            
+
               <!-- Botón con borde base -->
               <button
                 onclick="my_modal_2.showModal()"
@@ -83,12 +84,10 @@ const libros = await res.json();
                 Subir libro
               </button>
             </div>
-            <Modal></Modal>
-            <UploadBookModal></UploadBookModal>
-            <InciarSesionModal></InciarSesionModal>
-      
+            <Modal />
+            <UploadBookModal />
+            <InciarSesionModal />
           </div>
-
         </a>
       </article>
 
@@ -119,55 +118,9 @@ const libros = await res.json();
       </div>
     </section>
 
-    <BuscarLibro />
-    <!-- Sección Libros -->
-    <section
-      id="booksContainer"
-      class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 p-12 my-12"
-    >
-      {libros.map((libro: object) => <LibroPresentation {...libro} />)}
-    </section>
+    <Books client:load />
   </main>
 </Layout>
-
-<script type="module">
-  document.getElementById("book-search")
-    ?.addEventListener("input", async () => {
-      const input = document.getElementById("book-search");
-      const inputValue = input.value;
-
-      const response = await fetch(
-        "/api/searchBooks?" +
-          new URLSearchParams({ query: inputValue }).toString()
-      );
-      const data = await response.json();
-
-      const container = document.getElementById("booksContainer");
-      container.innerHTML = ""; // limpiar antes de volver a pintar
-
-      data.forEach(({ id, nombre, autor, portada_url }) => {
-        container.innerHTML += `
-          <a href="/libros/bookInfo${id}"
-             class="no-underline hover:curser-pointer book-card px-4 py-3 border border-[var(--border)] hover:border-[var(--active-border)] transition-all">
-            <div class="book-card__cover aspect-2/3">
-              <div class="book-card__book">
-                <div class="book-card__book-front">
-                  <img class="book-card__img" src="${portada_url}" alt="Portada de ${nombre}" />
-                </div>
-                <div class="book-card__book-side"></div>
-                <div class="book-card__book-back"></div>
-              </div>
-            </div>
-            <div>
-              <div class="text-[var(--text)] text-2xl font-extrabold">${nombre}</div>
-              <div class="text-[var(--active-border)] text-lg italic">${autor}</div>
-            </div>
-          </a>
-        `;
-      });
-    });
-</script>
-
 
 <style>
   #gato {
