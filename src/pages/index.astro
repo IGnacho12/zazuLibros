@@ -38,29 +38,7 @@ const libros = await res.json();
 
           <!-- Fondo y contenido -->
           <div class="flex gap-12">
-            <div class="relative group inline-block">
-              <!-- Borde animado -->
-              <span
-                class="absolute inset-0 rounded border border-transparent
-                                   group-hover:border-[var(--hover-border)]
-                                   group-active:border-[var(--active-border)]
-                                   pointer-events-none"
-              ></span>
-
-              <!-- Botón con borde base -->
-              <button
-                onclick="my_modal_1.showModal()"
-                class="relative z-10 block border border-[var(--border)]
-                                   bg-[var(--background)] px-12 py-3 rounded
-                                   transition-transform duration-200 ease-out
-                                   hover:-translate-x-1 hover:-translate-y-1
-                                   hover:bg-[color:var(--hover-color)]
-                                   active:translate-x-0 active:translate-y-0
-                                    hover:cursor-pointer"
-              >
-                Crear cuenta
-              </button>
-            </div>
+            
             <div class="relative group inline-block">
               <!-- Borde animado -->
               <span

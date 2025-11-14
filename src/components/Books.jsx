@@ -14,14 +14,14 @@ export default function Books() {
   useEffect(() => {
     setLoading(true);
     if (texto === "") {
-      fetch("https://zazu-libros.vercel.app/api/getBooks")
+      fetch("/api/getBooks")
         .then((response) => response.json())
         .then((data) => setLibros(data))
         .finally(() => setLoading(false));
       return;
     }
 
-    fetch(`https://zazu-libros.vercel.app/api/searchBooks?query=${texto}`)
+    fetch(`/api/searchBooks?query=${texto}`)
       .then((response) => response.json())
       .then((data) => setLibros(data))
       .finally(() => setLoading(false));
@@ -34,7 +34,7 @@ export default function Books() {
         <input
           onChange={(e) => setTexto(e.target.value)}
           className="myinput-link"
-          placeholder="El perro guaton"
+          placeholder="Nombre del libro"
         />
         <span className="link-icon">
           📕

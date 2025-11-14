@@ -1,168 +1,39 @@
-<header class="fixed top-0 left-0 w-full z-50 bg-[var(--background)] shadow">
-  <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-    <div class="flex h-16 items-center justify-between">
-      <!-- Logo -->
-      <div class="flex-1 md:flex md:items-center md:gap-12">
-        <a class="block text-[var(--primary)]" href="#">
-          <span class="sr-only">Inicio</span>
-          <svg
-            class="h-8"
-            viewBox="0 0 28 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M0.41 10.3847..." fill="currentColor"></path>
-          </svg>
+<header
+  class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-[var(--background)]/70 overflow-visible border-b border-gray-500/20"
+>
+  <div class="max-w-screen-xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-12 items-center justify-between">
+
+      <!-- LOGO -->
+      <a href="/" class="flex items-center gap-3">
+        <img 
+          src="/zazuImageIndex.webp"
+          alt="Logo de Zazu Libros"
+          class="h-32 w-auto object-contain -ml-2 mt-18"  
+        />
+
+        <span class="text-2xl font-bold text-[var(--text)]">
+          Zazu Libros
+        </span>
+      </a>
+
+      <!-- NAV derecha -->
+      <nav class="text-right flex gap-3 justify-center items-center">
+        <img
+        class="size-6"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWXXatvGdUncxQEmUwic8sz5sOGJCfT-ES2A&s" alt="">
+        <a 
+          href="https://www.tiktok.com/@tucuenta" 
+          target="_blank"
+          class="text-[var(--text)] hover:text-[var(--primary)] font-semibold transition"
+        >
+          TikTok
         </a>
-      </div>
+      </nav>
 
-      <!-- Nav + user -->
-      <div class="md:flex md:items-center md:gap-12">
-        <nav aria-label="Global" class="hidden md:block font-bold">
-          <ul class="flex items-center gap-6 text-sm">
-            <li>
-              <a
-                class="text-[var(--text)] hover:text-[var(--text)] transition"
-                href="#">¡Sube tu libro!</a>
-            </li>
-            <li>
-              <a
-                class="text-[var(--text)] hover:text-[var(--text)] transition"
-                href="#" onclick="my_modal_3.showModal()">Inciar sesión</a>
-            </li>
-            <li><span>
-              NombreDeUsuario</span></li>
-          </ul>
-        </nav>
-
-        <!-- Botón imagen + menú -->
-        <div class="hidden md:relative md:block">
-          <button
-            id="userMenuButton"
-            type="button"
-            class="overflow-hidden rounded-full shadow-inner"
-          >
-            <span class="sr-only">Abrir panel lateral</span>
-            <img
-            id="avatar"
-              src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-              alt=""
-              class="size-12 object-cover"
-            />
-          </button>
-
-          <!-- Menú con transición -->
-          <div
-            id="userMenu"
-            class="absolute end-0 z-10 mt-0.5 w-56 divide-y divide-[var(--secondary)] rounded-md border border-[var(--secondary)] bg-[var(--background)] shadow-lg
-            opacity-0 scale-95 pointer-events-none transition-all duration-200 ease-out"
-            role="menu"
-          >
-            <div class="p-2">
-              <a
-                href="#"
-                class="block rounded-lg px-4 py-2 text-sm text-[var(--text)]/70 hover:bg-[var(--accent)]/70 hover:text-[var(--text)]"
-                >My profile</a
-              >
-              <a
-                href="#"
-                class="block rounded-lg px-4 py-2 text-sm text-[var(--text)]/70 hover:bg-[var(--accent)]/70 hover:text-[var(--text)]"
-                >Billing summary</a
-              >
-              <a
-                href="#"
-                class="block rounded-lg px-4 py-2 text-sm text-[var(--text)]/70 hover:bg-[var(--accent)]/70 hover:text-[var(--text)]"
-                >Team settings</a
-              >
-            </div>
-            <div class="p-2">
-              <button
-                type="submit"
-                class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-100 hover:cursor-pointer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="size-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"></path>
-                </svg>
-                Cerrar Sesión
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Botón hamburguesa móvil -->
-        <div class="block md:hidden">
-          <button
-            class="rounded-sm bg-[var(--secondary)] p-2 text-[var(--text)] hover:text-[var(--accent)] transition"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="size-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </header>
 
-<script>
-  const btn = document.getElementById("userMenuButton");
-  const menu = document.getElementById("userMenu");
-  if (btn && menu) {
-    btn.addEventListener("click", () => {
-      const isOpen = menu.classList.contains("opacity-100");
-
-      if (isOpen) {
-        // cerrar
-        menu.classList.remove(
-          "opacity-100",
-          "scale-100",
-          "pointer-events-auto"
-        );
-        menu.classList.add("opacity-0", "scale-95", "pointer-events-none");
-      } else {
-        // abrir
-        menu.classList.remove("opacity-0", "scale-95", "pointer-events-none");
-        menu.classList.add("opacity-100", "scale-100", "pointer-events-auto");
-      }
-    });
-
-    // Cierra al hacer click fuera
-    document.addEventListener("click", (e) => {
-      if (!btn.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.remove(
-          "opacity-100",
-          "scale-100",
-          "pointer-events-auto"
-        );
-        menu.classList.add("opacity-0", "scale-95", "pointer-events-none");
-      }
-    });
-  }
-</script>
-
-<style>
-  input:focus-visible {
-    outline: 2px solid crimson;
-    border-radius: 3px;
-  }
-</style>
+<!-- Empuje para evitar superposición -->
+<div class="h-24"></div>

@@ -22,7 +22,7 @@ export default function BookCard({
           <img
             src={portada_url}
             alt={`Portada de ${nombre}`}
-            onError={(e) => (e.target.src = "zazuImageIndex.webp")}
+            onError={(e) => (e.target.src = "imgNotFound.png")}
             className="h-full w-full object-cover"
           />
         </section>
@@ -40,7 +40,7 @@ export default function BookCard({
             <p className="mt-2 text-sm line-clamp-5">{descripcion}</p>
 
             {/* Estrellas */}
-            <div className="mt-auto">
+            <div className="mt-auto hidden">
               <div className="flex items-center space-x-1.5">
                 <article className="rating">
                   <input value="5" name="rate" id="star5" type="radio" />
